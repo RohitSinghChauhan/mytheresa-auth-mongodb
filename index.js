@@ -8,19 +8,12 @@ const userRoute = require('./routes/user.route');
 const app = express();
 
 app.use(express.json());
-
-const corsOptions = {
-    origin: '*',
-    credentials: true,
-    optionSuccessStatus: 200
-}
-app.use(cors(corsOptions));
-
-app.use('/user', userRoute);
+app.use(cors());
 
 app.get('/', (req, res) => {
     res.send('Here you are!');
 })
+app.use('/user', userRoute);
 
 app.listen(8080, async () => {
     try {
