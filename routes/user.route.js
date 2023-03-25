@@ -8,11 +8,16 @@ userRoute.post('/signup', async (req, res) => {
     const { email, password } = req.body;
 
     try {
-        bcrypt.hash(password, 5, async function (err, hash) {
-            await UserModel.create({ email, password: hash });
-            res.send({ 'msg': 'User signed up successfully' });
-        })
-
+        const userAlreadyPresent = await UserModel.findOne({ email });
+        if (userAlreadyPresent?.email) {
+            res.send({ 'msg': 'user already present' });
+        }
+        else {
+            bcrypt.hash(password, 5, async function (err, hash) {
+                await UserModel.create({ email, password: hash });
+                res.send({ 'msg': 'User signed up successfully' });
+            })
+        }
     }
     catch (err) {
         console.log('Something went wrong', err);
