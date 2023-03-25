@@ -8,7 +8,6 @@ userRoute.post('/signup', async (req, res) => {
     const { email, password } = req.body;
 
     try {
-
         bcrypt.hash(password, 5, async function (err, hash) {
             await UserModel.create({ email, password: hash });
             res.send({ 'msg': 'User signed up successfully' });
